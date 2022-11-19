@@ -1,0 +1,17 @@
+metadata:
+  name: prometheus-config
+kind: ConfigMap
+apiVersion: v1
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+    scrape_configs:
+      - job_name: 'prometheus'
+        scrape_interval: 5s
+        static_configs:
+          - targets: ['localhost:9090']
+      - job_name: 'counter1-service-endpoints'
+        static_configs:
+          - targets: [ '34.77.71.83:3000' ]
+

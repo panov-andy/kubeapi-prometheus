@@ -1,0 +1,25 @@
+spec:
+  ingress:
+    - from:
+        - namespaceSelector: { }
+          podSelector: { }
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - port: 443
+          protocol: TCP
+        - port: 3000
+          protocol: TCP
+    - from:
+        - podSelector:
+            matchLabels:
+              app: prometheus
+              gardener.cloud/role: monitoring
+              role: monitoring
+      ports:
+        - port: 9115
+          protocol: TCP
+        - port: 443
+          protocol: TCP
+        - port: 3000
+          protocol: TCP

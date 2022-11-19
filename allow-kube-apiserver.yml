@@ -1,0 +1,59 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  annotations:
+    gardener.cloud/description: Allows Ingress to the Shoot's Kubernetes API Server
+      from pods labeled with 'networking.gardener.cloud/to-shoot-apiserver=allowed'
+      and Prometheus, and Egress to etcd pods.
+  creationTimestamp: "2022-10-12T11:45:31Z"
+  generation: 4
+  name: allow-kube-apiserver
+  namespace: shoot--panoramix--imbalance
+  resourceVersion: "17559270580"
+  uid: 76d8dea1-28ce-4d2f-a254-c78e53337775
+spec:
+  egress:
+    - ports:
+        - port: 2379
+          protocol: TCP
+      to:
+        - podSelector:
+            matchLabels:
+              app: etcd-statefulset
+              gardener.cloud/role: controlplane
+    - ports:
+        - port: 9443
+          protocol: TCP
+      to:
+        - podSelector:
+            matchLabels:
+              app: vpn-seed-server
+              gardener.cloud/role: controlplane
+  ingress:
+    - from:
+        - namespaceSelector: {}
+          podSelector: {}
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - port: 443
+          protocol: TCP
+    - from:
+        - podSelector:
+            matchLabels:
+              app: prometheus
+              gardener.cloud/role: monitoring
+              role: monitoring
+      ports:
+        - port: 9115
+          protocol: TCP
+        - port: 443
+          protocol: TCP
+  podSelector:
+    matchLabels:
+      app: kubernetes
+      gardener.cloud/role: controlplane
+      role: apiserver
+  policyTypes:
+    - Ingress
+    - Egress

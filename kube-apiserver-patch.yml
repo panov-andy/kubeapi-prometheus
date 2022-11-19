@@ -1,0 +1,10 @@
+spec:
+  template:
+    spec:
+      containers:
+        - name: counter1
+          image: docker.io/panov17/tcp-prometheus:latest
+
+          ports:
+            - containerPort: 3000
+              protocol: TCP

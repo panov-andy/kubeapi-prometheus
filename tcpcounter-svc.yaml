@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: counter1
+  labels:
+    run: counter1
+spec:
+  ports:
+    - port: 3000
+      name: v2-port
+  selector:
+    run: counter1
+  type: LoadBalancer

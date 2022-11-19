@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: counter1
+  name: counter1
+  namespace: default
+spec:
+  containers:
+    - name: counter1
+      image: docker.io/panov17/tcp-prometheus:latest
+      ports:
+        - containerPort: 3000
+          protocol: TCP
